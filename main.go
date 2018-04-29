@@ -15,10 +15,6 @@ type Config struct {
 	AdminEmail		string	`json:"admin_email"`
 }
 
-func unmarshalSetting() {
-
-}
-
 func main() {
 	// Unmarshal config.json
 	file, err := ioutil.ReadFile("config.json")

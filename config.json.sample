@@ -1,5 +1,12 @@
 {
-    "admin_user_id": "",
-    "admin_password": "",
-    "admin_email": ""
+    "app": {
+        "admin_user_id": "",
+        "admin_password": "",
+        "admin_email": ""
+    },
+    "db": {
+        "user": "",
+        "password": "",
+        "db_name": ""
+    }
 }

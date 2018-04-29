@@ -1,2 +1,2 @@
-# mantis
+# squirrel
 web image management

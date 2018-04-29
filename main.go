@@ -7,13 +7,13 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	_"github.com/go-sql-driver/mysql"
 )
 
 type Config struct {
-	AppConfig		App
-	DbConfig	Database
+	AppConfig App      `json:"app"`
+	DbConfig  Database `json:"db"`
 }
 
 type App struct {
@@ -23,13 +23,13 @@ type App struct {
 }
 
 type Database struct {
-	User		string `json:"user"`
-	Password	string `json:"password"`
-	DbName		string `json:"db_name"`
+	User     string `json:"user"`
+	Password string `json:"password"`
+	DbName   string `json:"db_name"`
 }
 
 func mysqlConnect(user, password, dbName string) (engine *xorm.Engine, err error) {
-	dataSourceName := user+":"+password+"@/"+dbName
+	dataSourceName := user + ":" + password + "@/" + dbName
 	engine, err = xorm.NewEngine("mysql", dataSourceName)
 	if err != nil {
 		return nil, err

@@ -42,7 +42,6 @@ func main() {
 
 	r.GET("/help", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "help.html", gin.H{"title": "Squirrel - Help", "adminEmail": config.AdminEmail})
-		log.Printf("%s", config.AdminEmail)
 	})
 
 	r.Static("/assets", "./assets")

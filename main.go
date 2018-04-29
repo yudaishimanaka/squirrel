@@ -1,18 +1,18 @@
 package main
 
 import (
-	"net/http"
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Config struct {
-	AdminUserID		string	`json:"admin_user_id"`
-	AdminPassword	string	`json:"admin_password"`
-	AdminEmail		string	`json:"admin_email"`
+	AdminUserID   string `json:"admin_user_id"`
+	AdminPassword string `json:"admin_password"`
+	AdminEmail    string `json:"admin_email"`
 }
 
 func main() {

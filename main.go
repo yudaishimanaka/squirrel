@@ -14,7 +14,11 @@ func main() {
 	})
 
 	r.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Squirrel"})
+		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Squirrel - Login"})
+	})
+
+	r.GET("/admin", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "admin.html", gin.H{"title": "Squirrel - Admin"})
 	})
 
 	r.Static("/assets", "./assets")

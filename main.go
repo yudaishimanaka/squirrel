@@ -28,13 +28,41 @@ type Database struct {
 	DbName   string `json:"db_name"`
 }
 
-func mysqlConnect(user, password, dbName string) (engine *xorm.Engine, err error) {
-	dataSourceName := user + ":" + password + "@/" + dbName
-	engine, err = xorm.NewEngine("mysql", dataSourceName)
+type User struct {
+	UserId		string	`xorm:"not null TEXT"`
+	Password	string	`xorm:"not null TEXT"`
+	Role		int		`xorm:"not null INT"`
+}
+
+type Image struct {
+	Id			int
+	Path		string
+	Uploaded	string
+}
+
+func initDatabase(driver, user, password, dbName string, config Config) (e *xorm.Engine, err error) {
+	engine, err := xorm.NewEngine(driver, user+":"+password+"@/")
 	if err != nil {
 		return nil, err
 	}
-	return engine, nil
+
+	if _, err := engine.Exec("CREATE DATABASE "+dbName); err != nil {
+		log.Printf("Database already exists.")
+		return engine, nil
+	} else {
+		engine.Exec("USE "+dbName)
+		engine.CreateTables(User{})
+		engine.CreateTables(Image{})
+		admin := User{
+			UserId: config.AppConfig.AdminUserID,
+			Password: config.AppConfig.AdminPassword,
+			Role: 1, // Role 0:default, 1:admin
+		}
+		engine.Insert(admin)
+		log.Printf("Success initialize.")
+
+		return engine, nil
+	}
 }
 
 func main() {
@@ -46,12 +74,11 @@ func main() {
 	var config Config
 	json.Unmarshal(file, &config)
 
-	// MySQL connect
-	engine, err := mysqlConnect(config.DbConfig.User, config.DbConfig.Password, config.DbConfig.DbName)
+	// Init database
+	engine, err := initDatabase("mysql", config.DbConfig.User, config.DbConfig.Password, config.DbConfig.DbName, config)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(engine)
 	}
-	defer engine.Close()
 
 	// Gin start
 	r := gin.Default()
